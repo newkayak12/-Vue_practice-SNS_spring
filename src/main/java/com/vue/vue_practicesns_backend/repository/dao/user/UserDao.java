@@ -1,8 +1,6 @@
-package com.vue.vue_practicesns_backend.repository.user;
+package com.vue.vue_practicesns_backend.repository.dao.user;
 
 import com.querydsl.jpa.impl.JPAQuery;
-import static com.vue.vue_practicesns_backend.web.domain.user.QUser.user;
-import com.vue.vue_practicesns_backend.web.domain.user.User;
 
 
 import javax.persistence.EntityManager;
@@ -17,8 +15,5 @@ public class UserDao {
         jpaQuery = new JPAQuery<>(em);
     }
 
-    public User fetchUserOne(){
-        return jpaQuery.select(user).from(user).fetchOne();
-    }
 
 }
