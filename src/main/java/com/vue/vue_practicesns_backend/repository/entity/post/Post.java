@@ -23,28 +23,30 @@ public class Post extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "userNo")
     private User user;
-
     @Column
     private Boolean isMain;
-    private String postLink;
-
+    @Column(columnDefinition = "varchar(500)")
+    private String outerLink;
+    @Column(columnDefinition = "varchar(500)")
+    private String movieLink;
     @Column(columnDefinition = "longText")
     private String content;
-
     @ManyToMany
     @JoinTable(name = "PostImage",
             joinColumns = @JoinColumn(name = "postNo"),
             inverseJoinColumns = @JoinColumn(name = "imageNo")
     )
     List<Image> imageList = new ArrayList<>();
-
     @ElementCollection
     @CollectionTable(
             name = "hashtag",
             joinColumns = @JoinColumn(name = "postNo")
     )
     List<String> hashtag = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "likedPost")
-    List<User> userList = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "likePost",
+            joinColumns = @JoinColumn(name = "postNo"),
+            inverseJoinColumns = @JoinColumn(name = "userNo")
+    )
+    List<User> likedUser = new ArrayList<>();
 }
