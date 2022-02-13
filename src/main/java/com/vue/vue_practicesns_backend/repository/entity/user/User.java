@@ -1,7 +1,6 @@
 package com.vue.vue_practicesns_backend.repository.entity.user;
 
 import com.vue.vue_practicesns_backend.repository.entity.base.BaseEntity;
-import com.vue.vue_practicesns_backend.repository.entity.follow.Follow;
 import com.vue.vue_practicesns_backend.repository.entity.image.Image;
 import com.vue.vue_practicesns_backend.repository.entity.post.Post;
 import lombok.*;
@@ -38,7 +37,21 @@ public class User extends BaseEntity {
     private String link;
     private LocalDate birth;
     @ManyToMany(mappedBy = "likedUser")
-    List<Post> likedPost = new ArrayList<>();
+    private List<Post> likedPost = new ArrayList<>();
 
+    @OneToMany
+    @JoinTable(
+            name = "Follow",
+            joinColumns = @JoinColumn(name = "fromNo"),
+            inverseJoinColumns = @JoinColumn(name = "toNo")
+    )
+    private List<User> follower = new ArrayList<>();
 
+    @OneToMany
+    @JoinTable(
+            name = "Follow",
+            joinColumns = @JoinColumn(name = "toNo"),
+            inverseJoinColumns = @JoinColumn(name = "fromNo")
+    )
+    private List<User> following = new ArrayList<>();
 }

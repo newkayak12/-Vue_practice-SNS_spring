@@ -1,26 +1,31 @@
 package com.vue.vue_practicesns_backend.repository.entity.follow;
 
 import com.vue.vue_practicesns_backend.repository.entity.base.RegistratedDate;
-import com.vue.vue_practicesns_backend.repository.entity.compositKey.FollowId;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import com.vue.vue_practicesns_backend.repository.entity.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
-@Setter
+@Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "Follow")
 public class Follow extends RegistratedDate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @EmbeddedId
-    private FollowId followId;
+
+//    @ManyToOne
+//    @JoinColumn
+//    private User fromNo;
+//
+//    @ManyToOne
+//    @JoinColumn
+//    private User toNo;
 
 }
