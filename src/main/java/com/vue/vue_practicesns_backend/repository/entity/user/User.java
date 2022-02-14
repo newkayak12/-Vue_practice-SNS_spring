@@ -26,7 +26,6 @@ public class User extends BaseEntity {
     private String password;
     @Column(length = 20)
     private String userName;
-
     @OneToOne
     @JoinColumn(name = "profileImageNo")
     private Image profileImage;
