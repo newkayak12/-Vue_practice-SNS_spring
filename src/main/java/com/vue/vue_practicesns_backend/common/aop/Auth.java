@@ -8,6 +8,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class Auth {
 
     TokenManager tokenManager = new TokenManager();
-
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Around("@annotation(com.vue.vue_practicesns_backend.common.annotation.Authenticate)")
 //    @Before("execution(public * com.vue.vue_practicesns_backend.controller.UserController.*(..))")
@@ -63,7 +64,7 @@ public class Auth {
                 userId = (String) parameterValue[i];
             }
             if(signature.getMethod().getParameters()[i].getName().equals("password")){
-                password = (String) parameterValue[i];
+                password = encoder.encode((String) parameterValue[i]);
             }
         }
         try{
