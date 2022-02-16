@@ -54,22 +54,25 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
-			<version>3.6.3</version>
+			<version>4.1.4</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.mysema.querydsl/querydsl-jpa -->
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			<version>3.6.3</version>
+			<version>4.1.4</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.mysema.querydsl/querydsl-core -->
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-core</artifactId>
-			<version>3.6.3</version>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>5.6.1</version>
 		</dependency>
 	</dependencies>
 
@@ -98,8 +101,8 @@
 						</goals>
 						<configuration>
 							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<!--                            <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>-->
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+<!--							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>-->
 						</configuration>
 					</execution>
 				</executions>
