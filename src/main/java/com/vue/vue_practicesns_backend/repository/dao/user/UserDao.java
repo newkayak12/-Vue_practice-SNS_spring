@@ -22,33 +22,30 @@ import java.time.LocalDateTime;
 public class UserDao {
     @PersistenceContext
     EntityManager em;
-
-    private JPAQuery<?> jpaQuery;
-    UserDao(){
-        jpaQuery = new JPAQuery<>(em);
-    }
-
-
-    public User signIn(String userId, String password) {
-        return   jpaQuery.select(user)
-                .from(user)
-                .where(user.userId.eq(userId).and(user.password.eq(password)))
-                .fetchOne();
-    }
-
-    public void signUp(User user) {
-        em.persist(user);
-        em.flush();
-    }
-
-
-    public void signOut(Long userNo) {
-       User _user = jpaQuery.select(user).from(user).where(user.userNo.eq(userNo)).fetchOne();
-       _user.setModifiedDate(LocalDate.now());
-       em.merge(_user);
-    }
-
-    public User addFollowing(Long userNo) {
-        return jpaQuery.select(user).from(user).where(user.userNo.eq(userNo)).fetchOne();
-    }
+//
+//    private JPAQuery<?> jpaQuery = new JPAQuery<>(em);
+//
+//
+//    public User signIn(String userId, String password) {
+//        return   jpaQuery.select(user)
+//                .from(user)
+//                .where(user.userId.eq(userId).and(user.password.eq(password)))
+//                .fetchOne();
+//    }
+//
+//    public void signUp(User user) {
+//        em.persist(user);
+//        em.flush();
+//    }
+//
+//
+//    public void signOut(Long userNo) {
+//       User _user = jpaQuery.select(user).from(user).where(user.userNo.eq(userNo)).fetchOne();
+//       _user.setModifiedDate(LocalDate.now());
+//       em.merge(_user);
+//    }
+//
+//    public User addFollowing(Long userNo) {
+//        return jpaQuery.select(user).from(user).where(user.userNo.eq(userNo)).fetchOne();
+//    }
 }

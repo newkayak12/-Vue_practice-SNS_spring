@@ -20,46 +20,45 @@ import java.util.Map;
 public class UserController {
     private BCryptPasswordEncoder cryptPasswordEncoder;
     private UserService userService;
-    @Autowired
-    UserController(BCryptPasswordEncoder cryptPasswordEncoder, UserService userService){
-        this.cryptPasswordEncoder = cryptPasswordEncoder;
-        this.userService = userService;
-    }
-
-    @RequestMapping(value = "/signin", method = RequestMethod.GET)
-    @Encrypt
-    public Map signIn(String userId, String password, @RequestHeader(value = "authorization") String authorization) throws NoSuchElement {
-        Map result = new HashMap();
-        User user = userService.signIn(userId, cryptPasswordEncoder.encode(password));
-        if(!cryptPasswordEncoder.matches(password, user.getPassword())){
-            throw new NoSuchElement("아이디 혹은 비밀번호가 다릅니다.");
-        }
-        result.put("userData", user );
-        result.put("authorization", authorization);
-        return result;
-    }
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    @Encrypt
-    public Map signUp(String userId, String password, User user, @RequestHeader(value = "authorization")String authorization) {
-        Map result = new HashMap();
-        user.setPassword(cryptPasswordEncoder.encode(password));
-        userService.signUp(user);
-        result.put("userData", user);
-        result.put("authorization", authorization);
-        return result;
-    }
-
-    @RequestMapping(value="/signout", method = RequestMethod.GET)
-    public Map signOut(@RequestHeader(value = "authorization")String authorization){
-        Map result = new HashMap();
-        userService.signOut(authorization);
-        result.put("userData","");
-        result.put("authorization","");
-        return result;
-    }
-
-    @RequestMapping(value = "/addFollowing", method = RequestMethod.PATCH)
-    public User addFollowing(@RequestHeader String authorization, Long targetNo){
-        return userService.addFollowing(authorization, targetNo);
-    }
+//    @Autowired
+//    UserController(BCryptPasswordEncoder cryptPasswordEncoder, UserService userService){
+//        this.cryptPasswordEncoder = cryptPasswordEncoder;
+//        this.userService = userService;
+//    }
+//
+//    @RequestMapping(value = "/signin", method = RequestMethod.GET)
+//    @Encrypt
+//    public Map signIn(String userId, String password, @RequestHeader(value = "authorization") String authorization) throws NoSuchElement {
+//        Map result = new HashMap();
+//        User user = userService.signIn(userId, cryptPasswordEncoder.encode(password));
+//        if(!cryptPasswordEncoder.matches(password, user.getPassword())){
+//            throw new NoSuchElement("아이디 혹은 비밀번호가 다릅니다.");
+//        }
+//        result.put("userData", user );
+//        result.put("authorization", authorization);
+//        return result;
+//    }
+//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+//    @Encrypt
+//    public Map signUp(String userId, String password, User user, @RequestHeader(value = "authorization")String authorization) {
+//        Map result = new HashMap();
+//        user.setPassword(cryptPasswordEncoder.encode(password));
+//        userService.signUp(user);
+//        result.put("userData", user);
+//        result.put("authorization", authorization);
+//        return result;
+//    }
+//
+//    @RequestMapping(value="/signout", method = RequestMethod.GET)
+//    public Map signOut(@RequestHeader(value = "authorization")String authorization){
+//        Map result = new HashMap();
+//        userService.signOut(authorization);
+//        result.put("userData","");
+//        result.put("authorization","");
+//        return result;
+//    }
+//    @RequestMapping(value = "/addFollowing", method = RequestMethod.PATCH)
+//    public User addFollowing(@RequestHeader String authorization, Long targetNo){
+//        return userService.addFollowing(authorization, targetNo);
+//    }
 }

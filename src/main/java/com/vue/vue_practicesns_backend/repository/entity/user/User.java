@@ -16,7 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+//@Entity
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     @Column(length = 255)
     private String link;
     private LocalDate birth;
-    @ManyToMany(mappedBy = "likedUser")
+//    @ManyToMany(mappedBy = "likedUser")
     private List<Post> likedPost = new ArrayList<>();
 
     @OneToMany
