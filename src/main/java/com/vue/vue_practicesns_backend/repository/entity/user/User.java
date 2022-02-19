@@ -1,6 +1,7 @@
 package com.vue.vue_practicesns_backend.repository.entity.user;
 
 import com.vue.vue_practicesns_backend.repository.entity.base.BaseEntity;
+import com.vue.vue_practicesns_backend.repository.entity.follow.Follow;
 import com.vue.vue_practicesns_backend.repository.entity.image.Image;
 import com.vue.vue_practicesns_backend.repository.entity.post.Post;
 import lombok.*;
@@ -9,14 +10,13 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@Entity
+@Entity
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,32 +28,32 @@ public class User extends BaseEntity {
     @Column(length = 20)
     private String userName;
     @OneToOne
-    @JoinColumn(name = "profileImageNo")
+    @JoinColumn(name = "profile_image_no")
     private Image profileImage;
     @OneToOne
-    @JoinColumn(name = "backgroundImageNo")
+    @JoinColumn(name = "background_image_no")
     private Image backgroundImage;
     @Column(length = 255)
     private String link;
     private LocalDate birth;
-//    @ManyToMany(mappedBy = "likedUser")
+    @ManyToMany(mappedBy = "likedUser", fetch = FetchType.EAGER)
     private List<Post> likedPost = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "Follow",
             joinColumns = @JoinColumn(name = "fromNo"),
             inverseJoinColumns = @JoinColumn(name = "toNo")
     )
-    private List<User> follower = new ArrayList<>();
+    private List<Follow> follower = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "Follow",
             joinColumns = @JoinColumn(name = "toNo"),
             inverseJoinColumns = @JoinColumn(name = "fromNo")
     )
-    private List<User> following = new ArrayList<>();
+    private List<Follow> following = new ArrayList<>();
 
 
 }

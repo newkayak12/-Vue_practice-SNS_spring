@@ -9,7 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-//@Entity
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,12 +20,12 @@ public class Follow extends RegistratedDate {
     private Long id;
 
 
-//    @ManyToOne
-//    @JoinColumn
-//    private User fromNo;
-//
-//    @ManyToOne
-//    @JoinColumn
-//    private User toNo;
+    @ManyToOne
+    @JoinColumn
+    private User fromNo;
+
+    @ManyToOne
+    @JoinColumn
+    private User toNo;
 
 }

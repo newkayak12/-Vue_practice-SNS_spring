@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Entity
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class Post extends BaseEntity {
     private String movieLink;
     @Column(columnDefinition = "longText")
     private String content;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "PostImage",
             joinColumns = @JoinColumn(name = "postNo"),
             inverseJoinColumns = @JoinColumn(name = "imageNo")
@@ -43,7 +43,8 @@ public class Post extends BaseEntity {
             joinColumns = @JoinColumn(name = "postNo")
     )
     List<String> hashtag = new ArrayList<>();
-    @ManyToMany
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "likePost",
             joinColumns = @JoinColumn(name = "postNo"),
             inverseJoinColumns = @JoinColumn(name = "userNo")
