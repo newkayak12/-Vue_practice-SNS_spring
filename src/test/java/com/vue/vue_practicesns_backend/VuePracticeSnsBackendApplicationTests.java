@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 //@DataJpaTest
 class VuePracticeSnsBackendApplicationTests {
 
-
 	@Test
 	void contextLoads() {
 	}
+
 
 }

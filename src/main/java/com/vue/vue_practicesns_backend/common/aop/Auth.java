@@ -3,9 +3,7 @@ package com.vue.vue_practicesns_backend.common.aop;
 import com.vue.vue_practicesns_backend.common.auth.Const;
 import com.vue.vue_practicesns_backend.common.auth.TokenManager;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -19,6 +17,7 @@ public class Auth {
 
     TokenManager tokenManager = new TokenManager();
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private Object target;
 
     @Around("@annotation(com.vue.vue_practicesns_backend.common.annotation.Authenticate)")
     public Object  authenticate (ProceedingJoinPoint proceedingJoinPoint) throws Throwable, IllegalAccessException {
@@ -32,11 +31,5 @@ public class Auth {
             }
         }
        return proceedingJoinPoint.proceed(proceedingJoinPoint.getArgs());
-    }
-
-    @After("@annotation(com.vue.vue_practicesns_backend.common.annotation.Encrypt))")
-    public void Encrypt(JoinPoint joinPoint) throws  Throwable, IllegalAccessException{
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-
     }
 }
