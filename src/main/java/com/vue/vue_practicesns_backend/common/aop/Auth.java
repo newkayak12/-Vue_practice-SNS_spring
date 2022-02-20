@@ -1,6 +1,6 @@
 package com.vue.vue_practicesns_backend.common.aop;
 
-import com.vue.vue_practicesns_backend.common.auth.Const;
+import com.vue.vue_practicesns_backend.common.Const;
 import com.vue.vue_practicesns_backend.common.auth.TokenManager;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

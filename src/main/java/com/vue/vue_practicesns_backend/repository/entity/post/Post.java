@@ -4,6 +4,8 @@ import com.vue.vue_practicesns_backend.repository.entity.base.BaseEntity;
 import com.vue.vue_practicesns_backend.repository.entity.image.Image;
 import com.vue.vue_practicesns_backend.repository.entity.user.User;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@DynamicUpdate
+@DynamicInsert
+@EqualsAndHashCode
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)

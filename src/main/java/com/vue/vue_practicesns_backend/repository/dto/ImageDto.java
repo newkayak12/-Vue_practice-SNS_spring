@@ -1,12 +1,14 @@
 package com.vue.vue_practicesns_backend.repository.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
 public class ImageDto implements Serializable {
-    private final Long imageNo;
-    private final String imagePath;
-    private final String imageName;
+    private Long imageNo;
+    private String imagePath;
+    private String imageName;
 }

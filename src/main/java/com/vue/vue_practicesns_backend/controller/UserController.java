@@ -1,6 +1,8 @@
 package com.vue.vue_practicesns_backend.controller;
 
 import com.vue.vue_practicesns_backend.common.annotation.Authenticate;
+import com.vue.vue_practicesns_backend.common.exceptions.DuplicateException;
+import com.vue.vue_practicesns_backend.common.exceptions.NoSuchElementException;
 import com.vue.vue_practicesns_backend.repository.dto.UserDto;
 import com.vue.vue_practicesns_backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +40,18 @@ public class UserController {
     @Authenticate
     public Map changeProfile(@RequestHeader(value = "Authorization") Object authorization,
                              @RequestBody UserDto user,
-                             @RequestPart MultipartFile profileMultiPart,
-                             @RequestPart MultipartFile backgroundMultiPart){
-
+                             @RequestPart(required = false) MultipartFile profileMultiPart,
+                             @RequestPart(required = false) MultipartFile backgroundMultiPart) throws NoSuchElementException {
+        return userService.changeProfile((Map) authorization, user, profileMultiPart, backgroundMultiPart);
+    }
+    @RequestMapping(value = "/changePassword", method = RequestMethod.PATCH)
+    @Authenticate
+    public Map changePassword(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map passwordSet) throws NoSuchElementException {
+        return userService.changePassword((Map) authorization, passwordSet);
+    }
+    @RequestMapping(value = "/addFollow", method = RequestMethod.PATCH)
+    @Authenticate
+    public Map addFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map follow) throws NoSuchElementException, DuplicateException {
+        return userService.addFollow((Map) authorization, follow);
     }
 }
