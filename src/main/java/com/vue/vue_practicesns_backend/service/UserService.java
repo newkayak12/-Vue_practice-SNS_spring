@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -121,5 +122,9 @@ public class UserService {
         userRepository.save(userEntity);
         modelMapper.map(userEntity, dto);
         return getAccessToken(dto);
+    }
+
+    public List<User> fetchFollowings(Long userNo) {
+        return userRepository.fetchFollowings(userNo);
     }
 }

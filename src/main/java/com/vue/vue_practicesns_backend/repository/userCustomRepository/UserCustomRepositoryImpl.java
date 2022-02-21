@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
+import static com.vue.vue_practicesns_backend.repository.entity.follow.QFollow.follow;
 import static com.vue.vue_practicesns_backend.repository.entity.user.QUser.user;
 
 @Repository
@@ -19,7 +21,12 @@ public class UserCustomRepositoryImpl extends QuerydslRepositorySupport implemen
 
     @Override
     public User signIn(UserDto userDto) {
-        return from(user).where(user.userId.eq(userDto.getUserId())).fetchOne();
+        return from(user)
+                .leftJoin(user.following, follow)
+                .fetchJoin()
+                .leftJoin(user.follower, follow)
+                .fetchJoin()
+                .where(user.userId.eq(userDto.getUserId())).fetchOne();
     }
 
     @Override
@@ -32,5 +39,16 @@ public class UserCustomRepositoryImpl extends QuerydslRepositorySupport implemen
             builder.and(user.userNo.eq((Long) map.get("userNo")));
         }
          return from(user).where(builder).fetchOne();
+    }
+
+    @Override
+    public List<User> fetchFollowings(Long userNo) {
+        return from(user)
+                .leftJoin(user.following, follow)
+                .fetchJoin()
+                .leftJoin(follow.fromNo, user)
+                .fetchJoin()
+                .where(user.userNo.eq(userNo))
+                .fetch();
     }
 }
