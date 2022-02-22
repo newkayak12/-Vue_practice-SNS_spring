@@ -24,8 +24,12 @@ public class Auth {
 
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
         Object[] parameterValue =  proceedingJoinPoint.getArgs();
+
         for( int i = 0; i< signature.getMethod().getParameters().length; i++){
             if(signature.getMethod().getParameters()[i].getName().equals("authorization")){
+                if((String) parameterValue[i]==null){
+                    throw new IllegalAccessException("잘못된 접근입니다.");
+                }
                 parameterValue[i] = tokenManager.decryptToken((String) parameterValue[i], Const.salt);
                 break;
             }

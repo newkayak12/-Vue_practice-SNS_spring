@@ -1,14 +1,18 @@
 package com.vue.vue_practicesns_backend.repository.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-
-public class UserDto implements Serializable {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class UserDto implements Serializable{
     private  LocalDate createdDate;
     private  LocalDate modifiedDate;
     private  Long userNo;

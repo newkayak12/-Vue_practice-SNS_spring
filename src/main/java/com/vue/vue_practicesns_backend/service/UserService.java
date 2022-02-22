@@ -10,8 +10,9 @@ import com.vue.vue_practicesns_backend.repository.dto.ImageDto;
 import com.vue.vue_practicesns_backend.repository.dto.UserDto;
 import com.vue.vue_practicesns_backend.repository.entity.image.Image;
 import com.vue.vue_practicesns_backend.repository.entity.user.User;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,15 +22,18 @@ import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @Service
-@RequiredArgsConstructor
-@Transactional
 public class UserService {
-    private TokenManager tokenManager;
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TokenManager tokenManager;
+    @Autowired
     private BCryptPasswordEncoder cryptPasswordEncoder;
+    @Autowired
     private ModelMapper modelMapper;
+    @Autowired
     private FileUpload fileUpload;
 
     @Transactional(rollbackOn = {Exception.class})
@@ -37,6 +41,7 @@ public class UserService {
         Map result = new HashMap();
         result.put("accessToken", tokenManager.encryptToken(userDto, Const.salt));
         result.put("userData", userDto);
+        log.warn("reuslt {}",result);
         return result;
     }
 
@@ -48,6 +53,7 @@ public class UserService {
                 .userId(dto.getUserId())
                 .userName(dto.getUserName())
                 .password(dto.getPassword())
+                .phone(dto.getPhone())
                 .birth(dto.getBirth()).build();
         dto.setUserNo(userRepository.save(user).getUserNo());
         return getAccessToken(dto);
@@ -57,10 +63,10 @@ public class UserService {
     public Map signIn(UserDto userDto) throws IllegalAccessException{
         UserDto dto = userDto;
         User userEntity = userRepository.signIn(userDto);
-        modelMapper.map(userEntity, dto);
         if(!cryptPasswordEncoder.matches(userDto.getPassword(), userEntity.getPassword())){
             throw new IllegalAccessException("아이디 혹은 비밀번호를 확인하세요");
         }
+        modelMapper.map(userEntity, dto);
         return getAccessToken(dto);
     }
 
@@ -71,7 +77,7 @@ public class UserService {
         if(userEntity == null){
             throw new NoSuchElementException("잘못된 접근입니다.");
         }
-        if(profileMultiPart.isEmpty()){
+        if(profileMultiPart!= null && !profileMultiPart.isEmpty()){
             ImageDto profileDto = fileUpload.fileUpload(profileMultiPart);
             Image profileEntity = Image.builder()
                     .imageName(profileDto.getImageName())
@@ -79,7 +85,7 @@ public class UserService {
                     .build();
             userEntity.setProfileImage(profileEntity);
         }
-        if(backgroundMultiPart.isEmpty()){
+        if(backgroundMultiPart!=null && !backgroundMultiPart.isEmpty()){
             ImageDto backgroundDto = fileUpload.fileUpload(backgroundMultiPart);
             Image backgroundEntity = Image.builder()
                     .imageName(backgroundDto.getImageName())
@@ -115,7 +121,7 @@ public class UserService {
         User userEntity = userRepository.beforeChange(authorization);
         User targetEntity = userRepository.beforeChange(follow);
         UserDto dto = new UserDto();
-        if(userEntity!=null && targetEntity!=null){
+        if(userEntity==null || targetEntity==null){
             throw new NoSuchElementException("잘못된 접근입니다.");
         }
         userEntity.addFollow(targetEntity);
@@ -123,8 +129,26 @@ public class UserService {
         modelMapper.map(userEntity, dto);
         return getAccessToken(dto);
     }
-
+    @Transactional(rollbackOn = {Exception.class})
+    public Map deleteFollow(Map authorization, Long userNo) throws NoSuchElementException{
+        User userEntity = userRepository.beforeChange(authorization);
+        Map follow = new HashMap();
+        follow.put("userNo", userNo);
+        UserDto dto = new UserDto();
+        User targetEntity = userRepository.beforeChange(follow);
+        if(userEntity==null){
+            throw new NoSuchElementException("잘못된 접근입니다.");
+        }
+        userEntity.deleteFollow(targetEntity);
+        userRepository.save(userEntity);
+        modelMapper.map(userEntity, dto);
+        return getAccessToken(dto);
+    }
     public List<User> fetchFollowings(Long userNo) {
         return userRepository.fetchFollowings(userNo);
     }
+    public List<User> fetchFollowers(Long userNo) {
+        return userRepository.fetchFollowers(userNo);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.vue.vue_practicesns_backend.repository;
 
 import com.vue.vue_practicesns_backend.common.Const;
 import com.vue.vue_practicesns_backend.repository.dto.ImageDto;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class FileUpload {
     public ImageDto fileUpload(MultipartFile file){
         ImageDto dto = new ImageDto();

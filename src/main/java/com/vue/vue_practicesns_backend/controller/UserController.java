@@ -6,8 +6,8 @@ import com.vue.vue_practicesns_backend.common.exceptions.NoSuchElementException;
 import com.vue.vue_practicesns_backend.repository.dto.UserDto;
 import com.vue.vue_practicesns_backend.repository.entity.user.User;
 import com.vue.vue_practicesns_backend.service.UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,9 +18,9 @@ import java.util.Map;
 @CrossOrigin(origins = "http://newkayak.iptime.org:8090" )
 @RestController
 @Slf4j
-@RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
@@ -44,6 +44,7 @@ public class UserController {
                              @RequestBody UserDto user,
                              @RequestPart(required = false) MultipartFile profileMultiPart,
                              @RequestPart(required = false) MultipartFile backgroundMultiPart) throws NoSuchElementException {
+        log.warn("auth {}", authorization);
         return userService.changeProfile((Map) authorization, user, profileMultiPart, backgroundMultiPart);
     }
     @RequestMapping(value = "/changePassword", method = RequestMethod.PATCH)
@@ -56,8 +57,19 @@ public class UserController {
     public Map addFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map follow) throws NoSuchElementException, DuplicateException {
         return userService.addFollow((Map) authorization, follow);
     }
+    @RequestMapping(value = "/deleteFollow", method = RequestMethod.PATCH)
+    @Authenticate
+    public Map deleteFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Long userNo) throws  NoSuchElementException, DuplicateException{
+        return userService.deleteFollow((Map) authorization, userNo);
+    }
+
     @RequestMapping(value = "/fetchFollowings", method = RequestMethod.GET)
     public List<User> fetchFollowings(@RequestParam Long userNo) {
         return userService.fetchFollowings(userNo);
+    }
+
+    @RequestMapping(value = "/fetchFollowers", method = RequestMethod.GET)
+    public List<User> fetchFollowers(@RequestParam Long userNo){
+        return userService.fetchFollowers(userNo);
     }
 }
