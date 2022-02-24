@@ -1,5 +1,6 @@
 package com.vue.vue_practicesns_backend;
 
+import com.vue.vue_practicesns_backend.common.exceptions.DuplicateException;
 import com.vue.vue_practicesns_backend.common.exceptions.NoSuchElementException;
 import com.vue.vue_practicesns_backend.controller.UserController;
 import com.vue.vue_practicesns_backend.repository.dto.UserDto;
@@ -71,5 +72,12 @@ class VuePracticeSnsBackendApplicationTests {
 		log.warn("result {} ", userController.changePassword("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCRHdVoxS0NiUFd4QUFCOEZ0bEdPV3AuMWprV2NERGxGQ1VNMnBoSE5rTHl2SUFBaDRvU1dScSIsInBob25lIjoiMDEwNDMxMjMxMjMiLCJ1c2VyTm8iOjE1LCJiaXJ0aCI6IjIwMjItMDItMjIiLCJ1c2VyTmFtZSI6IllKIiwidXNlcklkIjoibHp5amluIn0.HtZxUuO5Xa83fZ8HL4NHJbhDkppMiaIid6HUeg2L4MsrfGNrdl_l3soHYAoineGzm0zsL3fpZ_6iW-pvjjHf9Q",
 				passwordSet));
 //	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCRSck9UUk1CRXlJdEUxSUdSSFJIUjFlUEw2cnhxMTNPc1FiTEpxN0VrbmtITVZFMkdGQnVxZSIsInBob25lIjoiMDEwNDMxMjMxMjMiLCJ1c2VyTm8iOjE1LCJiaXJ0aCI6IjIwMjItMDItMjIiLCJ1c2VyTmFtZSI6IllKIiwidXNlcklkIjoibHp5amluIn0.iiQcmuNCsWFLUmh0WzVYv85sSLtxXFyvXWconL4FG8xZryZ_9M_KWvb62JGCMDOoSmZ8XpQnRkbSvcgMHqvxMQ
+	}
+
+	@Test
+	void addFollow() throws DuplicateException, NoSuchElementException {
+		Map map = new HashMap();
+		map.put("userNo", 14);
+		log.warn("result {}", userController.addFollow("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCRSck9UUk1CRXlJdEUxSUdSSFJIUjFlUEw2cnhxMTNPc1FiTEpxN0VrbmtITVZFMkdGQnVxZSIsInBob25lIjoiMDEwNDMxMjMxMjMiLCJ1c2VyTm8iOjE1LCJiaXJ0aCI6IjIwMjItMDItMjIiLCJ1c2VyTmFtZSI6IllKIiwidXNlcklkIjoibHp5amluIn0.iiQcmuNCsWFLUmh0WzVYv85sSLtxXFyvXWconL4FG8xZryZ_9M_KWvb62JGCMDOoSmZ8XpQnRkbSvcgMHqvxMQ", map));
 	}
 }

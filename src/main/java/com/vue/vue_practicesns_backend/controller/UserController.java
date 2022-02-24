@@ -54,7 +54,7 @@ public class UserController {
     }
     @RequestMapping(value = "/addFollow", method = RequestMethod.PATCH)
     @Authenticate
-    public Map addFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map follow) throws NoSuchElementException, DuplicateException {
+    public UserDto addFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map follow) throws NoSuchElementException, DuplicateException {
         return userService.addFollow((Map) authorization, follow);
     }
     @RequestMapping(value = "/deleteFollow", method = RequestMethod.PATCH)

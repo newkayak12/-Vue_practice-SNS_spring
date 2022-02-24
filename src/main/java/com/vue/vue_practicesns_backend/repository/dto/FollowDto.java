@@ -1,14 +1,20 @@
 package com.vue.vue_practicesns_backend.repository.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class FollowDto implements Serializable {
-    private final LocalDateTime regDate;
-    private final Long id;
-    private final UserDto fromNo;
-    private final UserDto toNo;
+    private Long id;
+    private LocalDateTime regDate;
+    private UserDto fromNo;
+    private UserDto toNo;
 }

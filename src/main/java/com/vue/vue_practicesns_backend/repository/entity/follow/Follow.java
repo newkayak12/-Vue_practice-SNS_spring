@@ -1,8 +1,8 @@
 package com.vue.vue_practicesns_backend.repository.entity.follow;
 
-import com.vue.vue_practicesns_backend.repository.entity.base.RegistratedDate;
 import com.vue.vue_practicesns_backend.repository.entity.user.User;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -12,18 +12,20 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Follow extends RegistratedDate {
+@EqualsAndHashCode
+@DynamicUpdate
+public class Follow  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "from_no", nullable = true)
     private User fromNo;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "to_no", nullable = true)
     private User toNo;
 
 }

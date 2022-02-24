@@ -1,7 +1,5 @@
 package com.vue.vue_practicesns_backend.repository.entity.user;
 
-import com.vue.vue_practicesns_backend.common.exceptions.DuplicateException;
-import com.vue.vue_practicesns_backend.common.exceptions.NoSuchElementException;
 import com.vue.vue_practicesns_backend.repository.entity.base.BaseEntity;
 import com.vue.vue_practicesns_backend.repository.entity.follow.Follow;
 import com.vue.vue_practicesns_backend.repository.entity.image.Image;
@@ -45,41 +43,13 @@ public class User extends BaseEntity  {
     @Column(length = 255)
     private String link;
     private LocalDate birth;
-    @ManyToMany(mappedBy = "likedUser", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "likedUser", fetch = FetchType.LAZY)
     private List<Post> likedPost = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(
-            name = "Follow",
-            joinColumns = @JoinColumn(name = "fromNo"),
-            inverseJoinColumns = @JoinColumn(name = "toNo")
-    )
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "toNo")
     private List<Follow> follower = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(
-            name = "Follow",
-            joinColumns = @JoinColumn(name = "toNo"),
-            inverseJoinColumns = @JoinColumn(name = "fromNo")
-    )
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "fromNo")
     private List<Follow> following = new ArrayList<>();
 
-    public void addFollow(User user) throws DuplicateException {
-        for(Follow follow : this.getFollowing()){
-            if(follow.getFromNo().equals(this) && follow.getToNo().equals(user)){
-                throw new DuplicateException("이미 팔로우한 사용자입니다.");
-            }
-        }
-
-        Follow follow = Follow.builder().fromNo(this).toNo(user).build();
-        this.getFollowing().add(follow);
-    }
-    public void deleteFollow(User user) throws NoSuchElementException {
-        this.getFollowing().stream().forEach(v->{
-            if(v.getFromNo().equals(this) && v.getToNo().equals(user)){
-                this.getFollowing().remove(user);
-            }
-        });
-        throw  new NoSuchElementException("해당 사용자는 존재하지 않습니다.");
-    }
 }

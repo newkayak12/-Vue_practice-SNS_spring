@@ -5,9 +5,11 @@ import com.vue.vue_practicesns_backend.common.auth.TokenManager;
 import com.vue.vue_practicesns_backend.common.exceptions.DuplicateException;
 import com.vue.vue_practicesns_backend.common.exceptions.NoSuchElementException;
 import com.vue.vue_practicesns_backend.repository.FileUpload;
+import com.vue.vue_practicesns_backend.repository.FollowRepository;
 import com.vue.vue_practicesns_backend.repository.UserRepository;
 import com.vue.vue_practicesns_backend.repository.dto.ImageDto;
 import com.vue.vue_practicesns_backend.repository.dto.UserDto;
+import com.vue.vue_practicesns_backend.repository.entity.follow.Follow;
 import com.vue.vue_practicesns_backend.repository.entity.image.Image;
 import com.vue.vue_practicesns_backend.repository.entity.user.User;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,8 @@ public class UserService {
     private ModelMapper modelMapper;
     @Autowired
     private FileUpload fileUpload;
+    @Autowired
+    private FollowRepository followRepository;
 
     @Transactional(rollbackOn = {Exception.class})
     public Map getAccessToken(UserDto userDto){
@@ -117,17 +121,28 @@ public class UserService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public Map addFollow(Map authorization, Map follow) throws NoSuchElementException, DuplicateException {
+    public UserDto addFollow(Map authorization, Map follow) throws NoSuchElementException, DuplicateException {
         User userEntity = userRepository.beforeChange(authorization);
         User targetEntity = userRepository.beforeChange(follow);
         UserDto dto = new UserDto();
         if(userEntity==null || targetEntity==null){
             throw new NoSuchElementException("잘못된 접근입니다.");
         }
-        userEntity.addFollow(targetEntity);
-        userRepository.save(userEntity);
+
+//        userEntity.addFollow(Follow.builder().toNo(targetEntity).build());
+//        log.warn("fol");
+//        userEntity.getFollowing().stream().forEach(System.out::println);
+//        userRepository.save(userEntity);
+//        userRepository.saveAndFlush(userEntity);
+        Follow following = new Follow();
+        following.setFromNo(userEntity);
+        following.setToNo(targetEntity);
+        followRepository.save(following);
+//        userEntity.addFollowing(following);
+//        targetEntity.addedFollower(following);
+
         modelMapper.map(userEntity, dto);
-        return getAccessToken(dto);
+        return dto;
     }
     @Transactional(rollbackOn = {Exception.class})
     public Map deleteFollow(Map authorization, Long userNo) throws NoSuchElementException{
@@ -139,7 +154,7 @@ public class UserService {
         if(userEntity==null){
             throw new NoSuchElementException("잘못된 접근입니다.");
         }
-        userEntity.deleteFollow(targetEntity);
+//        userEntity.deleteFollow(targetEntity);
         userRepository.save(userEntity);
         modelMapper.map(userEntity, dto);
         return getAccessToken(dto);
