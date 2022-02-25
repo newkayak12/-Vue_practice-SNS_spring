@@ -10,5 +10,5 @@ public interface UserCustomRepository  {
     public User signIn(UserDto userDto);
     public User beforeChange(Map map);
     public List<User> fetchFollowings(Long userNo);
-    List<User> fetchFollowers(Long userNo);
+//    List<User> fetchFollowers(Long userNo);
 }

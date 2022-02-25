@@ -138,32 +138,37 @@ public class UserService {
         following.setFromNo(userEntity);
         following.setToNo(targetEntity);
         followRepository.save(following);
-//        userEntity.addFollowing(following);
-//        targetEntity.addedFollower(following);
-
+        userEntity.getFollowing().add(following);
         modelMapper.map(userEntity, dto);
         return dto;
     }
     @Transactional(rollbackOn = {Exception.class})
-    public Map deleteFollow(Map authorization, Long userNo) throws NoSuchElementException{
+    public UserDto deleteFollow(Map authorization, Map follow) throws NoSuchElementException{
         User userEntity = userRepository.beforeChange(authorization);
-        Map follow = new HashMap();
-        follow.put("userNo", userNo);
         UserDto dto = new UserDto();
         User targetEntity = userRepository.beforeChange(follow);
         if(userEntity==null){
             throw new NoSuchElementException("잘못된 접근입니다.");
         }
-//        userEntity.deleteFollow(targetEntity);
+        log.warn("userEntity {}", userEntity);
+        log.warn("targetEntity {}", targetEntity);
+
+        Follow following = new Follow();
+        following.setFromNo(userEntity);
+        following.setToNo(targetEntity);
+
+        userEntity.unfollow(following);
+        log.warn(":::::::::::::::::::::::::::::::::::::::::");
         userRepository.save(userEntity);
+        log.warn(":::::::::::::::::::::::::::::::::::::::::");
         modelMapper.map(userEntity, dto);
-        return getAccessToken(dto);
+        return dto;
     }
     public List<User> fetchFollowings(Long userNo) {
         return userRepository.fetchFollowings(userNo);
     }
-    public List<User> fetchFollowers(Long userNo) {
-        return userRepository.fetchFollowers(userNo);
-    }
+//    public List<User> fetchFollowers(Long userNo) {
+//        return userRepository.fetchFollowers(userNo);
+//    }
 
 }

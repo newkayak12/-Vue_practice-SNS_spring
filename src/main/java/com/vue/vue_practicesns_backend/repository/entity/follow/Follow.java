@@ -14,6 +14,9 @@ import javax.persistence.*;
 @Builder
 @EqualsAndHashCode
 @DynamicUpdate
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"from_no", "to_no"})
+})
 public class Follow  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +24,11 @@ public class Follow  {
 
 
     @ManyToOne
-    @JoinColumn(name = "from_no", nullable = true)
+    @JoinColumn(name = "from_no")
     private User fromNo;
 
     @ManyToOne
-    @JoinColumn(name = "to_no", nullable = true)
+    @JoinColumn(name = "to_no")
     private User toNo;
 
 }

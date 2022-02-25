@@ -48,14 +48,14 @@ public class UserCustomRepositoryImpl extends QuerydslRepositorySupport implemen
                 .fetch();
     }
 
-    @Override
-    public List<User> fetchFollowers(Long userNo) {
-        return from(user)
-                .leftJoin(user.follower, follow)
-                .fetchJoin()
-                .leftJoin(follow.toNo, user)
-                .fetchJoin()
-                .where(user.userNo.eq(userNo))
-                .fetch();
-    }
+//    @Override
+//    public List<User> fetchFollowers(Long userNo) {
+//        return from(user)
+//                .leftJoin(user.follower, follow)
+//                .fetchJoin()
+//                .leftJoin(follow.toNo, user)
+//                .fetchJoin()
+//                .where(user.userNo.eq(userNo))
+//                .fetch();
+//    }
 }

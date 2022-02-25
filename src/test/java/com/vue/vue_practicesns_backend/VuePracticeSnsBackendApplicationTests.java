@@ -26,7 +26,7 @@ class VuePracticeSnsBackendApplicationTests {
 	void signUp() throws IllegalAccessException {
 		UserDto dto = UserDto
 				.builder()
-				.userId("lzyjin2")
+				.userId("lzyjin5")
 				.birth(LocalDate.now())
 				.password("qwer1234!")
 				.phone("01043123123")
@@ -77,7 +77,13 @@ class VuePracticeSnsBackendApplicationTests {
 	@Test
 	void addFollow() throws DuplicateException, NoSuchElementException {
 		Map map = new HashMap();
-		map.put("userNo", 14);
+		map.put("userNo", 19);
 		log.warn("result {}", userController.addFollow("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCRSck9UUk1CRXlJdEUxSUdSSFJIUjFlUEw2cnhxMTNPc1FiTEpxN0VrbmtITVZFMkdGQnVxZSIsInBob25lIjoiMDEwNDMxMjMxMjMiLCJ1c2VyTm8iOjE1LCJiaXJ0aCI6IjIwMjItMDItMjIiLCJ1c2VyTmFtZSI6IllKIiwidXNlcklkIjoibHp5amluIn0.iiQcmuNCsWFLUmh0WzVYv85sSLtxXFyvXWconL4FG8xZryZ_9M_KWvb62JGCMDOoSmZ8XpQnRkbSvcgMHqvxMQ", map));
+	}
+	@Test
+	void deleteFollow() throws DuplicateException, NoSuchElementException {
+		Map map = new HashMap();
+		map.put("userNo", 19);
+		log.warn("result {}", userController.deleteFollow("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCRSck9UUk1CRXlJdEUxSUdSSFJIUjFlUEw2cnhxMTNPc1FiTEpxN0VrbmtITVZFMkdGQnVxZSIsInBob25lIjoiMDEwNDMxMjMxMjMiLCJ1c2VyTm8iOjE1LCJiaXJ0aCI6IjIwMjItMDItMjIiLCJ1c2VyTmFtZSI6IllKIiwidXNlcklkIjoibHp5amluIn0.iiQcmuNCsWFLUmh0WzVYv85sSLtxXFyvXWconL4FG8xZryZ_9M_KWvb62JGCMDOoSmZ8XpQnRkbSvcgMHqvxMQ", map));
 	}
 }

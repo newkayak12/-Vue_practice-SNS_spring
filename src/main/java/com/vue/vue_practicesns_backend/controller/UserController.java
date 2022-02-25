@@ -59,17 +59,17 @@ public class UserController {
     }
     @RequestMapping(value = "/deleteFollow", method = RequestMethod.PATCH)
     @Authenticate
-    public Map deleteFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Long userNo) throws  NoSuchElementException, DuplicateException{
-        return userService.deleteFollow((Map) authorization, userNo);
+    public UserDto deleteFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map follow) throws  NoSuchElementException, DuplicateException{
+        return userService.deleteFollow((Map) authorization, follow);
     }
 
     @RequestMapping(value = "/fetchFollowings", method = RequestMethod.GET)
     public List<User> fetchFollowings(@RequestParam Long userNo) {
         return userService.fetchFollowings(userNo);
     }
-
-    @RequestMapping(value = "/fetchFollowers", method = RequestMethod.GET)
-    public List<User> fetchFollowers(@RequestParam Long userNo){
-        return userService.fetchFollowers(userNo);
-    }
+//
+//    @RequestMapping(value = "/fetchFollowers", method = RequestMethod.GET)
+//    public List<User> fetchFollowers(@RequestParam Long userNo){
+//        return userService.fetchFollowers(userNo);
+//    }
 }

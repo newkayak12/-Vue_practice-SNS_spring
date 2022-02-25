@@ -21,6 +21,7 @@ import java.util.List;
 @Entity
 @DynamicUpdate
 @DynamicInsert
+@ToString
 @EqualsAndHashCode
 public class User extends BaseEntity  {
     @Id
@@ -52,4 +53,8 @@ public class User extends BaseEntity  {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "fromNo")
     private List<Follow> following = new ArrayList<>();
 
+    public void unfollow(Follow follow){
+        this.getFollowing().remove(follow);
+        follow.getToNo().getFollower().remove(follow);
+    }
 }

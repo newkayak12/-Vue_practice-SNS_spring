@@ -6,12 +6,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+//@EqualsAndHashCode
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class UserDto implements Serializable{
     private  LocalDate createdDate;
     private  LocalDate modifiedDate;
