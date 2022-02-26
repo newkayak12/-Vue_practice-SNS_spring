@@ -1,5 +1,7 @@
 package com.vue.vue_practicesns_backend.repository.dto;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import java.io.Serializable;
@@ -13,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@JsonIdentityInfo(property = "userNo", generator = ObjectIdGenerators.PropertyGenerator.class)
 public class UserDto implements Serializable{
     private  LocalDate createdDate;
     private  LocalDate modifiedDate;

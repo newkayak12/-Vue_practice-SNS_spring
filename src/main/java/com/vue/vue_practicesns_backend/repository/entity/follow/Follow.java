@@ -22,7 +22,6 @@ public class Follow  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "from_no")
     private User fromNo;

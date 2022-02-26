@@ -13,9 +13,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -33,20 +36,67 @@ public class PostService {
         Pageable pageable = PageRequest.of(page,limit, Sort.by("createdDate").descending());
         Page<Post> pages = postRepository.findPostsByUser(userRepository.findById(userNo).get(), pageable);
         Map result = new HashMap();
-        result.put("contents", pages.getContent());
+        List<PostDto> list = new ArrayList<>();
+//        result.put("contents", pages.getContent());
+        pages.getContent().stream().forEach(v->{
+            PostDto dto = new PostDto();
+            modelMapper.map(v, dto);
+            list.add(dto);
+        });
+        result.put("contents", list);
         result.put("pageInfo",pages.getPageable());
         result.put("hasNext",pages.hasNext());
         return result;
     }
-
-    public PostDto writePost(Map authorization, PostDto post) {
+    @Transactional(rollbackOn = {Exception.class})
+    public PostDto writePost(Map authorization, PostDto post) throws IllegalAccessException {
         PostDto result = post;
         User userEntity = userRepository.beforeChange(authorization);
+        if(userEntity==null) {
+            throw  new IllegalAccessException("잘못된 접근입니다.");
+        }
         Post postEntity = new Post();
         modelMapper.map(result, postEntity);
         postEntity.setUser(userEntity);
         postRepository.save(postEntity);
         modelMapper.map(postEntity, result);
         return result;
+    }
+    @Transactional(rollbackOn = {Exception.class})
+    public PostDto modifyPost(Map authorization, PostDto post) throws IllegalAccessException {
+        PostDto dto = post;
+        User userEntity = userRepository.beforeChange(authorization);
+        if(userEntity==null){
+            throw new IllegalAccessException("잘못된 접근입니다.");
+        }
+        Post postEntity = postRepository.getById(dto.getPostNo());
+        if(dto.getContent() != null && !StringUtils.isEmpty(dto.getContent())){
+            postEntity.setContent(dto.getContent());
+        }
+        if(dto.getIsMain() != null&& !StringUtils.isEmpty(dto.getIsMain())){
+            postEntity.setIsMain(dto.getIsMain());
+        }
+        if(dto.getMovieLink() != null&&!StringUtils.isEmpty(dto.getMovieLink())){
+            postEntity.setMovieLink(dto.getMovieLink());
+        }
+        if(dto.getOuterLink() != null&&!StringUtils.isEmpty(dto.getOuterLink())){
+            postEntity.setOuterLink(dto.getOuterLink());
+        }
+        postRepository.save(postEntity);
+
+        modelMapper.map(postEntity, dto);
+        return dto;
+    }
+
+    public PostDto removePost(Map authorization, PostDto post) throws IllegalAccessException {
+        User userEntity = userRepository.beforeChange(authorization);
+        if(userEntity==null){
+            throw new IllegalAccessException("잘못된 접근입니다.");
+        }
+        PostDto dto = post;
+        Post postEntity = postRepository.getById(dto.getPostNo());
+        postRepository.delete(postEntity);
+        dto = null;
+        return dto;
     }
 }
