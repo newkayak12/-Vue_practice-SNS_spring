@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://newkayak.iptime.org:8090" )
+@CrossOrigin(origins = "http://newkayak.iptime.org:9080" )
 @RestController
 @Slf4j
 @RequestMapping("/api/user")

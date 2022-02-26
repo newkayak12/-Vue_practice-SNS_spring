@@ -2,7 +2,9 @@ package com.vue.vue_practicesns_backend;
 
 import com.vue.vue_practicesns_backend.common.exceptions.DuplicateException;
 import com.vue.vue_practicesns_backend.common.exceptions.NoSuchElementException;
+import com.vue.vue_practicesns_backend.controller.PostController;
 import com.vue.vue_practicesns_backend.controller.UserController;
+import com.vue.vue_practicesns_backend.repository.dto.PostDto;
 import com.vue.vue_practicesns_backend.repository.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -10,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
@@ -18,6 +22,8 @@ import java.util.Map;
 class VuePracticeSnsBackendApplicationTests {
 	@Autowired
 	UserController userController;
+	@Autowired
+	PostController postController;
 	@Test
 	void contextLoads() {
 	}
@@ -85,5 +91,27 @@ class VuePracticeSnsBackendApplicationTests {
 		Map map = new HashMap();
 		map.put("userNo", 19);
 		log.warn("result {}", userController.deleteFollow("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCRSck9UUk1CRXlJdEUxSUdSSFJIUjFlUEw2cnhxMTNPc1FiTEpxN0VrbmtITVZFMkdGQnVxZSIsInBob25lIjoiMDEwNDMxMjMxMjMiLCJ1c2VyTm8iOjE1LCJiaXJ0aCI6IjIwMjItMDItMjIiLCJ1c2VyTmFtZSI6IllKIiwidXNlcklkIjoibHp5amluIn0.iiQcmuNCsWFLUmh0WzVYv85sSLtxXFyvXWconL4FG8xZryZ_9M_KWvb62JGCMDOoSmZ8XpQnRkbSvcgMHqvxMQ", map));
+	}
+	@Test
+	void writePost(){
+		List<String> hashtag = new ArrayList<>();
+		hashtag.add("1");
+		hashtag.add("2");
+		hashtag.add("3");
+		hashtag.add("4");
+		PostDto dto = PostDto.builder()
+				.isMain(false)
+				.outerLink("https://www.apple.co.kr")
+				.movieLink("pnaQ9CbE6P0")
+				.content("TEST6")
+				.hashtag(hashtag)
+				.build();
+		log.warn("result {} ", postController.writePost("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCRSck9UUk1CRXlJdEUxSUdSSFJIUjFlUEw2cnhxMTNPc1FiTEpxN0VrbmtITVZFMkdGQnVxZSIsInBob25lIjoiMDEwNDMxMjMxMjMiLCJ1c2VyTm8iOjE1LCJiaXJ0aCI6IjIwMjItMDItMjIiLCJ1c2VyTmFtZSI6IllKIiwidXNlcklkIjoibHp5amluIn0.iiQcmuNCsWFLUmh0WzVYv85sSLtxXFyvXWconL4FG8xZryZ_9M_KWvb62JGCMDOoSmZ8XpQnRkbSvcgMHqvxMQ", dto));
+	}
+
+	@Test
+	void fetchPosts(){
+//		log.warn("result {}", postController.fetchPosts(Long.parseLong("15"), 1, 3));
+		 postController.fetchPosts(Long.parseLong("15"), 1, 3);
 	}
 }

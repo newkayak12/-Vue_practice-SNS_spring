@@ -1,5 +1,6 @@
 package com.vue.vue_practicesns_backend.repository.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vue.vue_practicesns_backend.repository.entity.base.BaseEntity;
 import com.vue.vue_practicesns_backend.repository.entity.follow.Follow;
 import com.vue.vue_practicesns_backend.repository.entity.image.Image;
@@ -21,7 +22,6 @@ import java.util.List;
 @Entity
 @DynamicUpdate
 @DynamicInsert
-@ToString
 @EqualsAndHashCode
 public class User extends BaseEntity  {
     @Id
@@ -44,17 +44,13 @@ public class User extends BaseEntity  {
     @Column(length = 255)
     private String link;
     private LocalDate birth;
+    @JsonIgnore
     @ManyToMany(mappedBy = "likedUser", fetch = FetchType.LAZY)
     private List<Post> likedPost = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "toNo")
     private List<Follow> follower = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "fromNo")
     private List<Follow> following = new ArrayList<>();
-
-    public void unfollow(Follow follow){
-        this.getFollowing().remove(follow);
-        follow.getToNo().getFollower().remove(follow);
-    }
 }

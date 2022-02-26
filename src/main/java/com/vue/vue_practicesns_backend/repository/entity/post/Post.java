@@ -1,7 +1,6 @@
 package com.vue.vue_practicesns_backend.repository.entity.post;
 
 import com.vue.vue_practicesns_backend.repository.entity.base.BaseEntity;
-import com.vue.vue_practicesns_backend.repository.entity.image.Image;
 import com.vue.vue_practicesns_backend.repository.entity.user.User;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -20,6 +19,7 @@ import java.util.List;
 @DynamicUpdate
 @DynamicInsert
 @EqualsAndHashCode
+@ToString
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -36,13 +36,7 @@ public class Post extends BaseEntity {
     private String movieLink;
     @Column(columnDefinition = "longText")
     private String content;
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(name = "PostImage",
-            joinColumns = @JoinColumn(name = "postNo"),
-            inverseJoinColumns = @JoinColumn(name = "imageNo")
-    )
-    List<Image> imageList = new ArrayList<>();
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "hashtag",
             joinColumns = @JoinColumn(name = "postNo")

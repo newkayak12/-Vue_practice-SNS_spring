@@ -1,22 +1,26 @@
 package com.vue.vue_practicesns_backend.repository.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class PostDto implements Serializable {
-    private final LocalDate createdDate;
-    private final LocalDate modifiedDate;
-    private final Long PostNo;
-    private final UserDto user;
-    private final Boolean isMain;
-    private final String outerLink;
-    private final String movieLink;
-    private final String content;
-    private final List<ImageDto> imageList;
-    private final List<String> hashtag;
-    private final List<UserDto> likedUser;
+    private  LocalDate createdDate;
+    private  LocalDate modifiedDate;
+    private  Long PostNo;
+    private  UserDto user;
+    private  Boolean isMain;
+    private  String outerLink;
+    private  String movieLink;
+    private  String content;
+    private  List<String> hashtag;
+    private  List<UserDto> likedUser;
 }
