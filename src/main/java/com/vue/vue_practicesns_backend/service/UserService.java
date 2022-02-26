@@ -153,14 +153,9 @@ public class UserService {
         log.warn("userEntity {}", userEntity);
         log.warn("targetEntity {}", targetEntity);
 
-        Follow following = new Follow();
-        following.setFromNo(userEntity);
-        following.setToNo(targetEntity);
-
-        userEntity.unfollow(following);
-        log.warn(":::::::::::::::::::::::::::::::::::::::::");
-        userRepository.save(userEntity);
-        log.warn(":::::::::::::::::::::::::::::::::::::::::");
+        Follow followEntity = followRepository.findByFromAndTo(userEntity, targetEntity);
+        followRepository.delete(followEntity);
+        userEntity.getFollowing().remove(followEntity);
         modelMapper.map(userEntity, dto);
         return dto;
     }
