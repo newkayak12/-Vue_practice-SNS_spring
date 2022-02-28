@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "http://newkayak.iptime.org:9080" )
+@CrossOrigin("*")
 @RestController
 @Slf4j
 @RequestMapping("/api/post")

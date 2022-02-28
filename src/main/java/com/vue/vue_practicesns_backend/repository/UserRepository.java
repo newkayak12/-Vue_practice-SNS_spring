@@ -5,7 +5,10 @@ import com.vue.vue_practicesns_backend.repository.userCustomRepository.UserCusto
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, UserCustomRepository {
     public Integer countUserByUserId(String userId);
+    public List<User> searchUsersByUserNameOrUserId(String userName, String userId);
 }

@@ -4,7 +4,6 @@ import com.vue.vue_practicesns_backend.common.annotation.Authenticate;
 import com.vue.vue_practicesns_backend.common.exceptions.DuplicateException;
 import com.vue.vue_practicesns_backend.common.exceptions.NoSuchElementException;
 import com.vue.vue_practicesns_backend.repository.dto.UserDto;
-import com.vue.vue_practicesns_backend.repository.entity.user.User;
 import com.vue.vue_practicesns_backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://newkayak.iptime.org:9080" )
+@CrossOrigin("*")
 @RestController
 @Slf4j
 @RequestMapping("/api/user")
@@ -29,8 +28,10 @@ public class UserController {
     }
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
     public Map signIn(@RequestParam Map map) throws IllegalAccessException{
+        log.warn("??:{}",map);
         UserDto userDto = UserDto.builder().userId((String) map
                 .get("userId")).password((String) map.get("password")).build();
+        log.warn("___{}", userDto);
         return  userService.signIn(userDto);
     }
     @RequestMapping(value = "/signOut", method = RequestMethod.GET)
@@ -68,7 +69,11 @@ public class UserController {
         return userService.deleteFollow((Map) authorization, follow);
     }
     @RequestMapping(value = "/fetchFollowings", method = RequestMethod.GET)
-    public List<User> fetchFollowings(@RequestParam Long userNo) {
+    public List<UserDto> fetchFollowings(@RequestParam Long userNo) {
         return userService.fetchFollowings(userNo);
+    }
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public List<UserDto> search(@RequestParam String searchText){
+        return userService.search(searchText);
     }
 }

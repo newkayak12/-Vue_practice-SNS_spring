@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,8 +165,14 @@ public class UserService {
         modelMapper.map(userEntity, dto);
         return dto;
     }
-    public List<User> fetchFollowings(Long userNo) {
-        return userRepository.fetchFollowings(userNo);
+    public List<UserDto> fetchFollowings(Long userNo) {
+         List<UserDto> dtos = new ArrayList<>();
+        userRepository.fetchFollowings(userNo).stream().forEach(v->{
+            UserDto dto = new UserDto();
+            modelMapper.map(v, dto);
+            dtos.add(dto);
+        });
+        return dtos;
     }
 
     public UserDto fetchUserInfo(Long userNo) {
@@ -175,4 +182,13 @@ public class UserService {
         return dto;
     }
 
+    public List<UserDto> search(String searchText) {
+        List<UserDto> dtos = new ArrayList<>();
+        userRepository.searchUsersByUserNameOrUserId(searchText, searchText).stream().forEach(v->{
+            UserDto dto = new UserDto();
+            modelMapper.map(v,dto);
+            dtos.add(dto);
+        });
+        return dtos;
+    }
 }
