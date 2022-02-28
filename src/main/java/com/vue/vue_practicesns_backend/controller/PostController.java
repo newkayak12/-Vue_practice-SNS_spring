@@ -36,5 +36,15 @@ public class PostController {
     public PostDto removePost(@RequestHeader(value = "Authorization") Object authorization, @RequestBody PostDto post) throws IllegalAccessException {
         return postService.removePost((Map) authorization, post);
     }
+    @RequestMapping(value = "/addLikePost", method = RequestMethod.POST)
+    @Authenticate
+    public PostDto addLikePost (@RequestHeader(value = "Authorization") Object authorization, @RequestBody PostDto post) throws IllegalAccessException {
+        return postService.addLikePost((Map) authorization, post);
+    }
+    @RequestMapping(value = "/removeLikePost", method = RequestMethod.DELETE)
+    @Authenticate
+    public PostDto removeLkePost(@RequestHeader(value = "Authorization") Object authorization, @RequestParam PostDto post) throws IllegalAccessException {
+        return postService.removeLikePost((Map) authorization, post);
+    }
 
 }

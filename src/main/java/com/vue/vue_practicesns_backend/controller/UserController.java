@@ -24,11 +24,13 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public Map signUp(@RequestBody  UserDto userDto){
+    public Map signUp(@RequestBody  UserDto userDto) throws DuplicateException {
         return userService.signUp(userDto);
     }
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
-    public Map signIn(@RequestParam UserDto userDto) throws IllegalAccessException{
+    public Map signIn(@RequestParam Map map) throws IllegalAccessException{
+        UserDto userDto = UserDto.builder().userId((String) map
+                .get("userId")).password((String) map.get("password")).build();
         return  userService.signIn(userDto);
     }
     @RequestMapping(value = "/signOut", method = RequestMethod.GET)
@@ -44,13 +46,16 @@ public class UserController {
                              @RequestBody UserDto user,
                              @RequestPart(required = false) MultipartFile profileMultiPart,
                              @RequestPart(required = false) MultipartFile backgroundMultiPart) throws NoSuchElementException {
-        log.warn("auth {}", authorization);
         return userService.changeProfile((Map) authorization, user, profileMultiPart, backgroundMultiPart);
     }
     @RequestMapping(value = "/changePassword", method = RequestMethod.PATCH)
     @Authenticate
     public Map changePassword(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map passwordSet) throws NoSuchElementException {
         return userService.changePassword((Map) authorization, passwordSet);
+    }
+    @RequestMapping(value = "/fetchUserInfo", method = RequestMethod.GET)
+    public UserDto fetchUserInfo(@RequestParam Long userNo){
+        return userService.fetchUserInfo(userNo);
     }
     @RequestMapping(value = "/addFollow", method = RequestMethod.PATCH)
     @Authenticate
@@ -62,14 +67,8 @@ public class UserController {
     public UserDto deleteFollow(@RequestHeader(value = "Authorization") Object authorization, @RequestBody Map follow) throws  NoSuchElementException, DuplicateException{
         return userService.deleteFollow((Map) authorization, follow);
     }
-
     @RequestMapping(value = "/fetchFollowings", method = RequestMethod.GET)
     public List<User> fetchFollowings(@RequestParam Long userNo) {
         return userService.fetchFollowings(userNo);
     }
-//
-//    @RequestMapping(value = "/fetchFollowers", method = RequestMethod.GET)
-//    public List<User> fetchFollowers(@RequestParam Long userNo){
-//        return userService.fetchFollowers(userNo);
-//    }
 }

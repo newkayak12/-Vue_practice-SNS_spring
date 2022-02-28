@@ -99,4 +99,36 @@ public class PostService {
         dto = null;
         return dto;
     }
+
+    public PostDto addLikePost(Map authorization, PostDto post) throws IllegalAccessException {
+        Post postEntity = postRepository.getById(post.getPostNo());
+        User userEntity = userRepository.getById(Long.parseLong(authorization.get("userNo").toString()));
+        if(postEntity.getPostNo()==null){
+            throw new IllegalAccessException("잘못된 접근입니다.");
+        }
+        if(postEntity.getUser().getUserNo()==userEntity.getUserNo()){
+            throw  new IllegalAccessException("잘못된 접근입니다.");
+        }
+        postEntity.getLikedUser().add(userEntity);
+        postRepository.save(postEntity);
+        PostDto dto = new PostDto();
+        modelMapper.map(postEntity, dto);
+        return dto;
+    }
+
+    public PostDto removeLikePost(Map authorization, PostDto post) throws IllegalAccessException {
+        Post postEntity = postRepository.getById(post.getPostNo());
+        User userEntity = userRepository.getById(Long.parseLong(authorization.get("userNo").toString()));
+        if(postEntity.getPostNo()==null){
+            throw new IllegalAccessException("잘못된 접근입니다.");
+        }
+        if(postEntity.getUser().getUserNo()==userEntity.getUserNo()){
+            throw  new IllegalAccessException("잘못된 접근입니다.");
+        }
+        postEntity.getLikedUser().remove(userEntity);
+        postRepository.save(postEntity);
+        PostDto dto = new PostDto();
+        modelMapper.map(postEntity, dto);
+        return dto;
+    }
 }

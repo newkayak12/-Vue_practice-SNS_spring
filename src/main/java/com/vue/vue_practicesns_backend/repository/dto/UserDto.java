@@ -1,7 +1,7 @@
 package com.vue.vue_practicesns_backend.repository.dto;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.io.Serializable;
@@ -15,12 +15,12 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@JsonIdentityInfo(property = "userNo", generator = ObjectIdGenerators.PropertyGenerator.class)
 public class UserDto implements Serializable{
     private  LocalDate createdDate;
     private  LocalDate modifiedDate;
     private  Long userNo;
     private  String userId;
+    @JsonIgnore
     private  String password;
     private  String userName;
     private  String phone;
@@ -29,6 +29,8 @@ public class UserDto implements Serializable{
     private  String link;
     private  LocalDate birth;
     private  List<PostDto> likedPost;
+    @JsonIgnoreProperties({"id","regDate","toNo"})
     private  List<FollowDto> follower;
+    @JsonIgnoreProperties({"id","regDate","fromNo"})
     private  List<FollowDto> following;
 }

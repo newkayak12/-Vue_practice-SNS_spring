@@ -19,13 +19,14 @@ import java.util.List;
 @DynamicUpdate
 @DynamicInsert
 @EqualsAndHashCode
+@ToString
 //@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "userNo")@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "postNo")
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long PostNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userNo")
     private User user;
     @Column

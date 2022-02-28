@@ -50,7 +50,7 @@ public class UserService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public Map signUp(UserDto userDto) {
+    public Map signUp(UserDto userDto) throws DuplicateException {
         UserDto dto = userDto;
         dto.setPassword(cryptPasswordEncoder.encode(userDto.getPassword()));
         User user = User.builder()
@@ -59,6 +59,11 @@ public class UserService {
                 .password(dto.getPassword())
                 .phone(dto.getPhone())
                 .birth(dto.getBirth()).build();
+
+        Integer duplicated = userRepository.countUserByUserId(userDto.getUserId());
+        if(duplicated>0){
+            throw new DuplicateException("이미 있는 사용자입니다.");
+        }
         dto.setUserNo(userRepository.save(user).getUserNo());
         return getAccessToken(dto);
     }
@@ -162,8 +167,12 @@ public class UserService {
     public List<User> fetchFollowings(Long userNo) {
         return userRepository.fetchFollowings(userNo);
     }
-//    public List<User> fetchFollowers(Long userNo) {
-//        return userRepository.fetchFollowers(userNo);
-//    }
+
+    public UserDto fetchUserInfo(Long userNo) {
+        User userEntity = userRepository.getById(userNo);
+        UserDto dto = new UserDto();
+        modelMapper.map(userEntity, dto);
+        return dto;
+    }
 
 }

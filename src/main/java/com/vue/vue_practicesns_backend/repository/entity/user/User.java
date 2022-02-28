@@ -45,6 +45,7 @@ public class User extends BaseEntity  {
     private LocalDate birth;
     @ManyToMany(mappedBy = "likedUser", fetch = FetchType.LAZY)
     private List<Post> likedPost = new ArrayList<>();
+
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "toNo")
     private List<Follow> follower = new ArrayList<>();
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "fromNo")
